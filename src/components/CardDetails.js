@@ -4,7 +4,7 @@ import PokeContext from './PokeContext'
 import moment from 'moment/moment'
 
 function CardDetails(card) {
-  const { currentCards, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, collection, setCollection, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, addZeroes } = useContext(PokeContext)
+  const { currentCards, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, collection, setCollection, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, addZeroes, cardTotalValue } = useContext(PokeContext)
 
   // when card is added to collection, show popup that says card added to collection and fadeout within 2s
   // when selected card is in collection, show things that indicate to user that they own it and how many
@@ -23,6 +23,7 @@ function CardDetails(card) {
             <p className='modaltext'>{currentCards[selectedCard].rarity}</p>
             <p className='modaltext'>{currentCards[selectedCard].set.name}</p>
             <p className='modaltext'>{moment(currentCards[selectedCard].set.releaseDate, 'YYYY/MM/DD').format('MMMM Do YYYY')}</p>
+            <p>{cardTotalValue(currentCards[selectedCard])}</p>
             {selectedCard && Object.keys(currentCards[selectedCard].tcgplayer.prices).map(v => (
               <React.Fragment key={`${v}Fragment`}>
               

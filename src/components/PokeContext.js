@@ -118,7 +118,19 @@ const [collectionValue, setCollectionValue] = useState(0)
     }) 
     return sum
   }
-  // collectionMarketValue()
+  
+  // Create cardTotalVal property & value for each card in collection. Give each card a total value. total value = sum of both variations
+  const cardTotalValue = (a) => {
+    let collection = JSON.parse(localStorage.getItem('collection'))
+    let tempArr = []
+    let cardTotalVal = null
+    Object.keys(a.tcgplayer.prices).forEach((v) => {
+      tempArr.push(a.tcgplayer.prices[v].market * a.variations[v].amount)
+      cardTotalVal = tempArr.reduce((varA, varB) => varA + varB)
+      a.totalValue = cardTotalVal
+    }) 
+    return addZeroes(cardTotalVal)
+  }
 
 // , create two functions first to show modal second to hide modal, 
   const showModal = (e) => {
@@ -151,7 +163,7 @@ const [collectionValue, setCollectionValue] = useState(0)
  }
   console.log(collectionMounted)
   return (
-    <PokeContext.Provider value={{ query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, setCollectionMounted, onHomepage, setOnHomepage, collectionValue, setCollectionValue, collectionMarketValue, addZeroes }}>
+    <PokeContext.Provider value={{ query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, setCollectionMounted, onHomepage, setOnHomepage, collectionValue, setCollectionValue, collectionMarketValue, addZeroes, cardTotalValue }}>
       {children}
     </PokeContext.Provider>
   );

@@ -86,6 +86,26 @@ function CardList() {
       setCurrentPage(1)
       setCurrentCards(cards.slice(indexOfFirstCard, indexOfLastCard))
     }
+    if(e.target.value === 'Market Price') {
+      console.log('Market Price')
+      let cardAArr = []
+      let cardBArr = []
+      let cardATotalVal = null
+      let cardBTotalVal = null
+      cards.sort((cardA, cardB) => {
+ 
+        Object.keys(cardB.tcgplayer.prices).forEach((v) => {
+          cardBArr.push(cardB.tcgplayer.prices[v].market * cardB.variations[v].amount)
+          cardBTotalVal = cardBArr.reduce((a,b) => a + b)
+          cardB.totalValue = cardBTotalVal
+        })
+        
+        
+        console.log(cardATotalVal, cardBTotalVal)
+      })
+      setCurrentPage(1)
+      setCurrentCards(cards.slice(indexOfFirstCard, indexOfLastCard))
+    }
   }
 
   let cardNum = 0
