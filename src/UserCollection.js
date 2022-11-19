@@ -15,7 +15,11 @@ function UserCollection() {
     setCollectionValue(collectionMarketValue())
     setCollectionMounted(true)
     setCurrentCards()
-    setCards(collection)
+    setCards(collection.sort(
+      (d1, d2) =>
+        new Date(d1.set.releaseDate).getTime() -
+        new Date(d2.set.releaseDate).getTime()
+    ))
     // console.log('useeffect ran')
   }, [])
   
@@ -23,54 +27,18 @@ function UserCollection() {
     setCurrentCards(cards.slice(indexOfFirstCard, indexOfLastCard))
   }, [cards])
 
+  // whenever collectionValue changes()
   useEffect(() => {
     console.log(`collection page: ${collectionValue}`)
+
     // setCollectionValue(collectionValue)
     // let collection = JSON.parse(localStorage.getItem('collection'))
     // setCollectionValue(collectionMarketValue())
     // setCurrentCards()
     // setCards(collection)
   }, [collectionValue])
+    
   
-  // sums up tcg market price of all cards in collection to determine total collection value
-  
-
-     //for each card, grab variation (from either the variation property or market.price) and variation amounts. Then multiply variation amount by the variation market price to get total of that variation(make variable?). Add both of those numbers together and that number is what gets added to sum
-  
-  // const collectionMarketValue = () => {
-  //   let sum = 0
-  //   // for each card in collection...
-  //   collection.forEach(c => {
-  //     // look at the variation name in tcgplayer prices...
-  //     if(Object.keys(c.tcgplayer.prices).forEach(v => {
-  //       // variation names
-        
-  //     }) === Object.keys(c.variations).forEach(cv => {
-        
-  //     })) {
-  //       Object.keys(c.tcgplayer.prices).forEach(v => {
-  //         sum += c.tcgplayer.prices[v].market
-          
-  //         // console.log(`${c.name} - ${v}: ${c.tcgplayer.prices[v].market}`)
-  //       })
-  //     } 
-
-  //   })
-  //   return sum
-  // }
-
- 
-  // useEffect(() => {
-  //   setCollectionValue(collectionMarketValue())
-  // }, [localStorage.getItem('collection')])
-// console.log(cards)
-// console.log(collection)
-
-
-
-  useEffect(() => {
-
-  })
   
   return (
     <>

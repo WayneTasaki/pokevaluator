@@ -59,6 +59,7 @@ function CardList() {
       isFirstRender.current = false
       return;
     }
+    // sorts currentCards oldest to newest by default
     currentCards && setCurrentCards(cards.slice(indexOfFirstCard, indexOfLastCard))
   }, [indexOfFirstCard])
 

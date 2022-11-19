@@ -34,5 +34,8 @@
 }
 .addToCollection {
   cursor: pointer;
-  
+}
+.addOrRemoveBtn {
+  cursor: pointer;
+  margin: 0 .5rem;
 }
