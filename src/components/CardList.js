@@ -6,7 +6,8 @@ import CardDetails from './CardDetails'
 import Collection from './Collection'
 // Figure out how to filter results based on certain criteria. What should be the default sorting method? What should be all the filter criteria? Do I add conditionals in SearchBar.js since the filter needs to happen to the main card object? I guess not, so long as you're only able to filter once you do a search for a pokemon
 function CardList() {
-  const { query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, setCollectionMounted } = useContext(PokeContext)
+  const parseCurrency = require('parsecurrency');
+  const { query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, setCollectionMounted, cardTotalValue, mounted } = useContext(PokeContext)
 
   const isFirstRender = useRef(true)
   
@@ -25,11 +26,9 @@ function CardList() {
   
   useEffect(() => {
     if(collectionMounted) {
-      setCurrentCards()
-      // console.log('cards should display')
-      // setCards(collection)
-      
-      // console.log(currentCards)
+      cards.sort((a, b) => parseCurrency(a.totalValue).value > parseCurrency(b.totalValue).value ? -1 : 1);
+      setCurrentPage(1)
+      setCurrentCards(cards.slice(indexOfFirstCard, indexOfLastCard))
     } else {
       setCurrentPage(1)
     }
@@ -89,27 +88,15 @@ function CardList() {
     }
     if(e.target.value === 'Market Price') {
       console.log('Market Price')
-      let cardAArr = []
-      let cardBArr = []
-      let cardATotalVal = null
-      let cardBTotalVal = null
-      cards.sort((cardA, cardB) => {
- 
-        Object.keys(cardB.tcgplayer.prices).forEach((v) => {
-          cardBArr.push(cardB.tcgplayer.prices[v].market * cardB.variations[v].amount)
-          cardBTotalVal = cardBArr.reduce((a,b) => a + b)
-          cardB.totalValue = cardBTotalVal
-        })
-        
-        
-        console.log(cardATotalVal, cardBTotalVal)
-      })
+      cards.sort((a, b) => parseCurrency(a.totalValue).value > parseCurrency(b.totalValue).value ? -1 : 1);
       setCurrentPage(1)
       setCurrentCards(cards.slice(indexOfFirstCard, indexOfLastCard))
     }
   }
 
   let cardNum = 0
+  let selectValue = 'Market Price (High - Low)'
+  // IF I GIVE EACH CARD IN COLLECTION A CARDTOTALVALUE PROPERTY, I MAY BE ABLE TO RENDER THE VALUE UNDER EACH CARD +++ SORT IT EASIER. TRY MAKING USEEFFECT WHEN CURRENTCARDS CHANGES OR ADD THE VALUES INSIDE THE SAVETOLOCALSTORAGE FUNCTION 
   
   
   return (
@@ -118,16 +105,22 @@ function CardList() {
       {/* {showCardDetails && <CardDetails selectedCard={selectedCard}/>} */}
       <h1>CardList</h1>
       <p>Sorted by:</p>
-      <select name="sort" id="sort" onChange={(e) => handleChangeSort(e)}>
+      <select name="sort" id="sort" value={selectValue} onChange={(e) => handleChangeSort(e)}>
         {collectionMounted && <option value='Market Price'>Market Price (High - Low)</option>}
         <option value="Oldest > Newest">Oldest - Newest</option>
         <option value="Newest > Oldest">Newest - Oldest</option>
       </select>
-      {/* maps through all currentCards. The ID is the place the card sits inside the currentCard object. I use this to identify which card is clicked to bring up the CardDetails component */}
+      {/* maps through all currentCards. The ID is the index where the card sits inside the currentCard object. I use this to identify which card is clicked to bring up the CardDetails component */}
+      
       {currentCards && currentCards.map(c => (
+        <React.Fragment key={`${c.id} frag`}>
         <img src={c.images.small} key={c.id} id={cardNum++} onClick={(e) => showModal(e)}></img>
+        <span>{c.totalValue}</span>
+        </React.Fragment>
+        
       ))}
-      {/* component which renders the pagination  */}
+
+
       {currentCards && <Pagination cardsPerPage={cardsPerPage} totalCards={cards.length} paginate={paginate}/>}
     </div>
     

@@ -13,6 +13,10 @@ pokemon.configure({apiKey: process.env.REACT_APP_API_KEY})
 function Home() {
   const { query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, setCollectionMounted, onHomepage, setOnHomepage } = useContext(PokeContext)
   
+  useEffect(() => {
+    setCurrentCards()
+    setCollectionMounted(false)
+  },[])
 
 
   return (
@@ -20,7 +24,7 @@ function Home() {
     {selectedCard && <CardDetails/>}
     
     <Link to='/collection' element={<UserCollection/>}>
-      <img src={collectionIcon} alt="" onClick={ () => setCurrentCards(null)}/>
+      <img src={collectionIcon} alt="" onClick={ () => setCurrentCards()}/>
     </Link>
     <SearchBar/>
     <CardList/>

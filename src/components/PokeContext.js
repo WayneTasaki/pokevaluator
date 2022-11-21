@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useRef } from "react";
 
 const PokeContext = createContext();
 
@@ -75,24 +75,42 @@ const [collectionValue, setCollectionValue] = useState(0)
       newCard.variations[newCardVar].amount = ++newCardVarAmount
       collection.push(newCard)
       localStorage.setItem('collection', JSON.stringify(collection))
-      cardTotalValue(newCard)
+      
+      collection = JSON.parse(localStorage.getItem('collection'))
+      newCard = collection.find(card => card.id === newCardId)
+      newCard.totalValue = cardTotalValue(newCard)
+      localStorage.setItem('collection', JSON.stringify(collection))
+      console.log(cardTotalValue(newCard))
+      console.log(newCard)
       setCollectionValue(collectionMarketValue())
     } else 
-    // if you have cards in your collection & a card has same id as the newCard, increment that cards variation amount
+    // if you have cards in your collection & a card has same id as the newCard, increment that cards variation amount. explain why i did it this way. wanted to keep the cardTotalValue function in use throughout the app so i chose to go around it
     if(collection.length >= 1 && collection.some(card => card.id === newCardId)) {
       let cardFromCollection = collection.find(card => card.id === newCardId)
       let cardFromCollectionVar = cardFromCollection.variations[newCardVar]
       let cardFromCollectionVarAmount = cardFromCollectionVar.amount
       cardFromCollectionVar.amount = ++cardFromCollectionVarAmount
       localStorage.setItem('collection', JSON.stringify(collection))
-      cardTotalValue(cardFromCollection)
+
+      collection = JSON.parse(localStorage.getItem('collection'))
+      cardFromCollection = collection.find(card => card.id === newCardId)
+      cardFromCollection.totalValue = cardTotalValue(cardFromCollection)
+      localStorage.setItem('collection', JSON.stringify(collection))
+      console.log(cardTotalValue(cardFromCollection))
+      console.log(cardFromCollection)
       setCollectionValue(collectionMarketValue())
     } else
     if(collection.length > 0 && !collection.some(card => card.id === newCardId)) {
       newCard.variations[newCardVar].amount = ++newCardVarAmount
       collection.push(newCard)
       localStorage.setItem('collection', JSON.stringify(collection))
-      cardTotalValue(newCard)
+
+      collection = JSON.parse(localStorage.getItem('collection'))
+      newCard = collection.find(card => card.id === newCardId)
+      newCard.totalValue = cardTotalValue(newCard)
+      localStorage.setItem('collection', JSON.stringify(collection))
+      console.log(cardTotalValue(newCard))
+      console.log(newCard)
       setCollectionValue(collectionMarketValue())
     }
   }
@@ -123,9 +141,12 @@ const [collectionValue, setCollectionValue] = useState(0)
     let collection = JSON.parse(localStorage.getItem('collection'))
     let cardFromCollection = collection.find(card => card.id === c.id)
     let variationAmount = cardFromCollection.variations[v].amount
-    console.log(variationAmount)
     cardFromCollection.variations[v].amount = --variationAmount
-    console.log(cardFromCollection)
+    localStorage.setItem('collection', JSON.stringify(collection))
+
+    collection = JSON.parse(localStorage.getItem('collection'))
+    cardFromCollection = collection.find(card => card.id === c.id)
+    cardFromCollection.totalValue = cardTotalValue(cardFromCollection)
     localStorage.setItem('collection', JSON.stringify(collection))
     setCollectionValue(collectionMarketValue())
     totalVariationValue(c, v)
@@ -155,15 +176,18 @@ const [collectionValue, setCollectionValue] = useState(0)
   
   // Create cardTotalVal property & value for each card in collection. Give each card a total value. total value = sum of both variations
   const cardTotalValue = (a) => {
-    let collection = JSON.parse(localStorage.getItem('collection'))
-    let cardInCollection = collection.find(card => card.id === a.id)
-    let tempArr = []
-    let cardTotalVal = null
-    Object.keys(cardInCollection.tcgplayer.prices).forEach((v) => {
-      tempArr.push(cardInCollection.tcgplayer.prices[v].market * cardInCollection.variations[v].amount)
-      cardTotalVal = tempArr.reduce((varA, varB) => varA + varB)
-    }) 
-    return addZeroes(cardTotalVal)
+    if(collectionMounted) {
+      let collection = JSON.parse(localStorage.getItem('collection'))
+      let tempArr = []
+      let cardTotalVal = null
+      let cardInCollection = collection.find(card => card.id === a.id)
+      Object.keys(cardInCollection.tcgplayer.prices).forEach((v) => {
+        tempArr.push(cardInCollection.tcgplayer.prices[v].market * cardInCollection.variations[v].amount)
+        cardTotalVal = tempArr.reduce((varA, varB) => varA + varB)
+      }) 
+      return addZeroes(cardTotalVal)
+    }
+    return
   }
 
   const totalVariationValue = (c, v) => {
@@ -212,12 +236,27 @@ const [collectionValue, setCollectionValue] = useState(0)
     let amountInCollection = cardInCollection.variations[v].amount
     return amountInCollection
   }
-
+  
+  // if currentCard[selectedCard].variations[v].amount 
+  // need to check if selectedcard variation is greater than 0 inside collection
+  // check selectedCard id and find card in collection with same id, put into variable. if cardInCollection.variations[v]
+  const isCardVarInCollection = (cardSelected, v ) => {
+    let collection = JSON.parse(localStorage.getItem('collection'))
+    // let cardInCollectionVariation = collection.find(card => card.variations[selectedCardVariation]  === selectedCardVariation)
+    
+    if(collection.some(card => card.id === cardSelected.id)) {
+      let cardInCollection = collection.find(card => card.id === cardSelected.id)
+      if(cardInCollection.variations[v].amount > 0) {
+        return true
+      }
+    }
+    return false
+  }
 
 
   console.log(collectionMounted)
   return (
-    <PokeContext.Provider value={{ query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, setCollectionMounted, onHomepage, setOnHomepage, collectionValue, setCollectionValue, collectionMarketValue, addZeroes, cardTotalValue, showCollectionAmount, totalVariationValue, removeFromLocalCollection, decrementCardVariation }}>
+    <PokeContext.Provider value={{ query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, setCollectionMounted, onHomepage, setOnHomepage, collectionValue, setCollectionValue, collectionMarketValue, addZeroes, cardTotalValue, showCollectionAmount, totalVariationValue, removeFromLocalCollection, decrementCardVariation, isCardVarInCollection }}>
       {children}
     </PokeContext.Provider>
   );

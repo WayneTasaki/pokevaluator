@@ -13,6 +13,7 @@
     "moment": "^2.29.4",
     "node-fetch": "^3.2.10",
     "nodemon": "^2.0.19",
+    "parsecurrency": "^1.1.0",
     "pokemontcgsdk": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
