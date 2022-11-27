@@ -19,6 +19,7 @@ export function PokeProvider({ children }) {
   // the id of the clicked card. Always a number, based on where the card sits in the currentCards object
   const [selectedCard, setSelectedCard] = useState()
   const [onHomepage, setOnHomepage] = useState(true)
+  const [searchOccured, setSearchOccurred] = useState(false)
 
 
   // ------- ** USER STATES ** ------- //
@@ -201,7 +202,7 @@ const [collectionValue, setCollectionValue] = useState(0)
 // , create two functions first to show modal second to hide modal, 
   const showModal = (e) => {
     setShowCardDetails(true)
-    // console.log(e.target.id)
+    console.log(e)
     setSelectedCard(e.target.id)
   }
 
@@ -256,7 +257,7 @@ const [collectionValue, setCollectionValue] = useState(0)
 
   console.log(collectionMounted)
   return (
-    <PokeContext.Provider value={{ query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, setCollectionMounted, onHomepage, setOnHomepage, collectionValue, setCollectionValue, collectionMarketValue, addZeroes, cardTotalValue, showCollectionAmount, totalVariationValue, removeFromLocalCollection, decrementCardVariation, isCardVarInCollection }}>
+    <PokeContext.Provider value={{ query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, setCollectionMounted, onHomepage, setOnHomepage, collectionValue, setCollectionValue, collectionMarketValue, addZeroes, cardTotalValue, showCollectionAmount, totalVariationValue, removeFromLocalCollection, decrementCardVariation, isCardVarInCollection, searchOccured, setSearchOccurred }}>
       {children}
     </PokeContext.Provider>
   );

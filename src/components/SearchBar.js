@@ -3,6 +3,8 @@ import { Router, Routes, Link } from "react-router-dom";
 import PokeContext from "./PokeContext";
 import pokemon from "pokemontcgsdk";
 import Search from "../Search";
+import search from '../images/search.png'
+import pokeball from '../images/pokeball.svg'
 pokemon.configure({ apiKey: process.env.REACT_APP_API_KEY });
 
 function SearchBar() {
@@ -30,7 +32,9 @@ function SearchBar() {
     searchType,
     setSearchType,
     onHomepage,
-    setOnHomepage
+    setOnHomepage, 
+    searchOccured, 
+    setSearchOccurred
   } = useContext(PokeContext);
   
   // gets value from search input, turns it into string, and sets that as the state for 'query'
@@ -84,6 +88,7 @@ function SearchBar() {
 
   // resets all previous search results and runs the fetchQuery function
   const handleSubmit = (e) => {
+    setSearchOccurred(true)
     e.preventDefault();
     // consolidate functions that reset
     setCurrentCards();
@@ -94,31 +99,37 @@ function SearchBar() {
   };
 
   return (
+    
     <>
-      {isLoading && <div>Loading ...</div>}
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          id="query"
-          onInput={getValue}
-          placeholder={searchPlaceholder}
-        />
-        <input
-          type="checkbox"
-          id="cardNumberSearch"
-          name="cardNumberSearch"
-          onChange={(e) => changeSearchType(e)}
-        />
-        <label htmlFor="cardNumberSearch">Search by card number</label>
-        
-          
-            <button type="submit">Search</button>
-          
-        
 
+      
+      <form onSubmit={handleSubmit}>
+
+      <div className="form-field">
+        <input
+              type="text"
+              id="query"
+              onInput={getValue}
+              placeholder={searchPlaceholder}
+        />
+        <img src={search} className='icon'/>
+      </div>
+      
+          
+          <div className="search-text-wrapper">
+            <input
+              type="checkbox"
+              id="cardNumberSearch"
+              name="cardNumberSearch"
+              onChange={(e) => changeSearchType(e)}
+            />
+            <label className="search-label" htmlFor="cardNumberSearch">Search by card number</label>
+          </div>
+
+          {/* <button type="submit" className="submit" >Search</button> */}
         {error && <p>{error}</p>}
       </form>
-    </>
+      </>
   );
 }
 

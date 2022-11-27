@@ -11,11 +11,21 @@ function CardList() {
 
   const isFirstRender = useRef(true)
   
-
-    // Paginate & change current page - triggers cascade of useEffects
-    const paginate = (n) => {
+      // Paginate & change current page - triggers cascade of useEffects
+      const paginate = (n) => {
+      const buttons = document.querySelectorAll('.page-buttons');
+      
+      buttons.forEach(btn => {
+        // ✅ Remove class from each element
+        btn.classList.remove('selected-page');
+      });
+      
       setCurrentPage(n)
+      let activePage = document.getElementById(`${n}`)
+      activePage.classList.add('selected-page')
+      
     }
+ 
   
   
   // when collection is mounted, setCards to collection
@@ -60,6 +70,7 @@ function CardList() {
     }
     // sorts currentCards oldest to newest by default
     currentCards && setCurrentCards(cards.slice(indexOfFirstCard, indexOfLastCard))
+    
   }, [indexOfFirstCard])
 
   
@@ -98,30 +109,35 @@ function CardList() {
   let selectValue = 'Market Price (High - Low)'
   // IF I GIVE EACH CARD IN COLLECTION A CARDTOTALVALUE PROPERTY, I MAY BE ABLE TO RENDER THE VALUE UNDER EACH CARD +++ SORT IT EASIER. TRY MAKING USEEFFECT WHEN CURRENTCARDS CHANGES OR ADD THE VALUES INSIDE THE SAVETOLOCALSTORAGE FUNCTION 
   
+
+
+    
   
   return (
     
-    <div>
-      {/* {showCardDetails && <CardDetails selectedCard={selectedCard}/>} */}
-      <h1>CardList</h1>
-      <p>Sorted by:</p>
-      <select name="sort" id="sort" value={selectValue} onChange={(e) => handleChangeSort(e)}>
-        {collectionMounted && <option value='Market Price'>Market Price (High - Low)</option>}
-        <option value="Oldest > Newest">Oldest - Newest</option>
-        <option value="Newest > Oldest">Newest - Oldest</option>
-      </select>
+    <div className='cardList-wrapper'>
+      <div className='sort-wrapper'>
+        <span className='sortSpan'>Sorted by:</span>
+        <select name="sort" id="sort" value={selectValue} onChange={(e) => handleChangeSort(e)}>
+          {collectionMounted && <option value='Market Price'>Market Price (High - Low)</option>}
+          <option value="Oldest > Newest">Oldest - Newest</option>
+          <option value="Newest > Oldest">Newest - Oldest</option>
+        </select>
+      </div>
+
       {/* maps through all currentCards. The ID is the index where the card sits inside the currentCard object. I use this to identify which card is clicked to bring up the CardDetails component */}
+      <div className='card-wrapper'>
+        {currentCards && currentCards.map(c => (
+          <React.Fragment key={`${c.id} frag`}>
+          <img src={c.images.small} key={c.id} id={c.id}className='cards' onClick={(e) => showModal(e)}></img>
+           {collectionMounted && <span>{c.totalValue}</span>} 
+          </React.Fragment>
+        ))}
+      </div>
+
+
+        {currentCards && <Pagination cardsPerPage={cardsPerPage} totalCards={cards.length} paginate={paginate}/>}
       
-      {currentCards && currentCards.map(c => (
-        <React.Fragment key={`${c.id} frag`}>
-        <img src={c.images.small} key={c.id} id={cardNum++} onClick={(e) => showModal(e)}></img>
-        <span>{c.totalValue}</span>
-        </React.Fragment>
-        
-      ))}
-
-
-      {currentCards && <Pagination cardsPerPage={cardsPerPage} totalCards={cards.length} paginate={paginate}/>}
     </div>
     
   )
