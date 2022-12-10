@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/%7Bpokevaluator%7D/static/css/main.8d232e27.css",
-    "main.js": "/%7Bpokevaluator%7D/static/js/main.839f4369.js",
-    "static/media/charizardderpgif.gif": "/%7Bpokevaluator%7D/static/media/charizardderpgif.e9ec4966e47075b9d807.gif",
-    "static/media/pokevaluatorLogo.png": "/%7Bpokevaluator%7D/static/media/pokevaluatorLogo.b7ccaf84aca646d9ccac.png",
-    "static/media/moneyBag.png": "/%7Bpokevaluator%7D/static/media/moneyBag.2a33b11b3a837b7a975f.png",
-    "static/media/search.png": "/%7Bpokevaluator%7D/static/media/search.e21534c50161a2f513a7.png",
-    "static/media/pokeball.svg": "/%7Bpokevaluator%7D/static/media/pokeball.2db7de44dd9ea6558c0113d7d9e3db9d.svg",
-    "index.html": "/%7Bpokevaluator%7D/index.html",
-    "main.8d232e27.css.map": "/%7Bpokevaluator%7D/static/css/main.8d232e27.css.map",
-    "main.839f4369.js.map": "/%7Bpokevaluator%7D/static/js/main.839f4369.js.map"
+    "main.css": "/pokevaluator/static/css/main.8d232e27.css",
+    "main.js": "/pokevaluator/static/js/main.c3b16b08.js",
+    "static/media/charizardderpgif.gif": "/pokevaluator/static/media/charizardderpgif.e9ec4966e47075b9d807.gif",
+    "static/media/pokevaluatorLogo.png": "/pokevaluator/static/media/pokevaluatorLogo.b7ccaf84aca646d9ccac.png",
+    "static/media/moneyBag.png": "/pokevaluator/static/media/moneyBag.2a33b11b3a837b7a975f.png",
+    "static/media/search.png": "/pokevaluator/static/media/search.e21534c50161a2f513a7.png",
+    "static/media/pokeball.svg": "/pokevaluator/static/media/pokeball.2db7de44dd9ea6558c0113d7d9e3db9d.svg",
+    "index.html": "/pokevaluator/index.html",
+    "main.8d232e27.css.map": "/pokevaluator/static/css/main.8d232e27.css.map",
+    "main.c3b16b08.js.map": "/pokevaluator/static/js/main.c3b16b08.js.map"
   },
   "entrypoints": [
     "static/css/main.8d232e27.css",
-    "static/js/main.839f4369.js"
+    "static/js/main.c3b16b08.js"
   ]
 }
