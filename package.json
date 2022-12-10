@@ -2,7 +2,7 @@
   "name": "pokevaluator",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://{waynetasaki}.github.io/{pokevaluator}",
+  "homepage": "http://waynetasaki.github.io/pokevaluator",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
