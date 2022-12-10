@@ -80,8 +80,11 @@ function SearchBar() {
       })
       .catch((err) => {
         if (err.name === "TypeError") {
+          setError("Sorry, no card found")
         }
-        setError("Sorry, no card found");
+        if (err.name === 'Network Error') {
+          setError("Sorry, it looks like the API is down. Try again in a few minutes")
+        }
         setIsLoading(false);
       });
   };

@@ -14,17 +14,17 @@ const Pagination = ({totalCards, paginate}) => {
   let allPages = document.getElementsByTagName('button')
   
   useEffect(() => {
-    paginate(1)
+    paginate(1, null)
   }, [])
   
   return (
     // have currentPage button be highlighted to indicate what page you're on
       <ul className='pagination-wrapper' style={{listStyle: 'none'}}>
         
-        {pageNumbers.map(n => (
-          <li key={n}>
-            <button className='page-buttons' id={n} onClick={() => paginate(n, allPages)}>
-              {n}
+        {pageNumbers.map(num => (
+          <li key={num}>
+            <button className='page-buttons' id={num} onClick={(e) => paginate(num, e.target.id)}>
+              {num}
             </button>
           </li>
         ))}

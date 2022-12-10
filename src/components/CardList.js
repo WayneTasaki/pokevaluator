@@ -4,16 +4,19 @@ import PokeContext from './PokeContext'
 import Pagination from './Pagination'
 import CardDetails from './CardDetails'
 import Collection from './Collection'
+import moneyBag from '../images/moneyBag.png'
+
 // Figure out how to filter results based on certain criteria. What should be the default sorting method? What should be all the filter criteria? Do I add conditionals in SearchBar.js since the filter needs to happen to the main card object? I guess not, so long as you're only able to filter once you do a search for a pokemon
 function CardList() {
   const parseCurrency = require('parsecurrency');
   const { query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, setCollectionMounted, cardTotalValue, mounted } = useContext(PokeContext)
-
+  
   const isFirstRender = useRef(true)
   
       // Paginate & change current page - triggers cascade of useEffects
-      const paginate = (n) => {
+      const paginate = (n, e, allPages) => {
       const buttons = document.querySelectorAll('.page-buttons');
+      
       
       buttons.forEach(btn => {
         // ✅ Remove class from each element
@@ -33,10 +36,16 @@ function CardList() {
   // collectionMounted && setCards(collection.slice(indexOfFirstCard, indexOfLastCard))
   // console.log(cards)
   // console.log(collection)
-  
+  // let selectedSort = ''
+
+  const [selectedSort, setSelectedSort] = useState()
+  console.log(selectedSort)
   useEffect(() => {
     if(collectionMounted) {
-      cards.sort((a, b) => parseCurrency(a.totalValue).value > parseCurrency(b.totalValue).value ? -1 : 1);
+      setSelectedSort('Market Price (High - Low)')
+      let sortDropDown = document.getElementById('sort')
+      sortDropDown.value = 'Market Price'
+      cards.sort((a, b) => parseCurrency(a.totalValue).value > parseCurrency(b.totalValue).value ? -1 : 1)
       setCurrentPage(1)
       setCurrentCards(cards.slice(indexOfFirstCard, indexOfLastCard))
     } else {
@@ -83,42 +92,59 @@ function CardList() {
 // 
 // 
 // 
+
+
+  
+
+
   // When a dropdown option is selected, sorts all cards and changes currentCards
   const handleChangeSort = (e) => {
+    console.log(e)
     if(e.target.value === 'Oldest > Newest') {
-      console.log('Oldest > Newest')
+      // selectedSort = 'Oldest - Newest'
+      setSelectedSort('Oldest - Newest')
       cards.sort((d1, d2) => new Date(d1.set.releaseDate).getTime() - new Date(d2.set.releaseDate).getTime())
       setCurrentPage(1)
       setCurrentCards(cards.slice(indexOfFirstCard, indexOfLastCard))
     }
     if(e.target.value === 'Newest > Oldest') {
-      console.log('Newest > Oldest')
+      // selectedSort = 'Newest - Oldest'
+      setSelectedSort('Newest - Oldest')
       cards.sort((d1, d2) => new Date(d2.set.releaseDate).getTime() - new Date(d1.set.releaseDate).getTime())
       setCurrentPage(1)
       setCurrentCards(cards.slice(indexOfFirstCard, indexOfLastCard))
     }
     if(e.target.value === 'Market Price') {
-      console.log('Market Price')
-      cards.sort((a, b) => parseCurrency(a.totalValue).value > parseCurrency(b.totalValue).value ? -1 : 1);
+      // selectedSort = 'Market Price (High - Low)'
+      setSelectedSort('Market Price (High - Low)')
+      console.log(cards)
+      cards.sort((a, b) => parseCurrency(a.totalValue).value > parseCurrency(b.totalValue).value ? -1 : 1)
+      console.log(cards)
       setCurrentPage(1)
       setCurrentCards(cards.slice(indexOfFirstCard, indexOfLastCard))
+      console.log(currentCards)
     }
   }
 
   let cardNum = 0
-  let selectValue = 'Market Price (High - Low)'
+  
   // IF I GIVE EACH CARD IN COLLECTION A CARDTOTALVALUE PROPERTY, I MAY BE ABLE TO RENDER THE VALUE UNDER EACH CARD +++ SORT IT EASIER. TRY MAKING USEEFFECT WHEN CURRENTCARDS CHANGES OR ADD THE VALUES INSIDE THE SAVETOLOCALSTORAGE FUNCTION 
   
+  const matchCard = (currentCards, c) => {
+    return c.find(card => card.id === c.id)
+  }
 
-
-    
+    const collectionDefaultSort = () => {
+       return selectedSort
+    }
   
   return (
     
     <div className='cardList-wrapper'>
       <div className='sort-wrapper'>
         <span className='sortSpan'>Sorted by:</span>
-        <select name="sort" id="sort" value={selectValue} onChange={(e) => handleChangeSort(e)}>
+        {/* make selectValue a state which is set in handlechangeesort function */}
+        <select name="sort" id="sort" defaultValue={collectionDefaultSort()} onChange={(e) => handleChangeSort(e)}>
           {collectionMounted && <option value='Market Price'>Market Price (High - Low)</option>}
           <option value="Oldest > Newest">Oldest - Newest</option>
           <option value="Newest > Oldest">Newest - Oldest</option>
@@ -129,8 +155,16 @@ function CardList() {
       <div className='card-wrapper'>
         {currentCards && currentCards.map(c => (
           <React.Fragment key={`${c.id} frag`}>
-          <img src={c.images.small} key={c.id} id={c.id}className='cards' onClick={(e) => showModal(e)}></img>
-           {collectionMounted && <span>{c.totalValue}</span>} 
+            <div className='individual-card'>
+          <img src={c.images.small} key={c.id} id={c.id}className='cards' onClick={(e) => showModal(e, currentCards)}></img>
+
+           {collectionMounted && 
+           <>
+            <span className='collection-card-value'><img src={moneyBag} className='money-bag'/>{c.totalValue}</span>
+           </>
+           }
+
+           </div>
           </React.Fragment>
         ))}
       </div>

@@ -3,6 +3,7 @@ import { createContext, useState, useEffect, useRef } from "react";
 const PokeContext = createContext();
 
 export function PokeProvider({ children }) {
+  const parseCurrency = require('parsecurrency');
   let collection = JSON.parse(localStorage.getItem('collection'))
   const [query, setQuery] = useState('')
   const [isLoading, setIsLoading] = useState(null)
@@ -128,12 +129,9 @@ const [collectionValue, setCollectionValue] = useState(0)
     localStorage.setItem('collection', JSON.stringify(collection))
     let updatedCollection = JSON.parse(localStorage.getItem('collection'))
     setCurrentCards()
-    setCards(updatedCollection.sort(
-      (d1, d2) =>
-        new Date(d1.set.releaseDate).getTime() -
-        new Date(d2.set.releaseDate).getTime()
-    ))
+    setCards(updatedCollection.sort((a, b) => parseCurrency(a.totalValue).value > parseCurrency(b.totalValue).value ? -1 : 1))
     setCollectionValue(collectionMarketValue())
+    localStorage.setItem('collection', JSON.stringify(updatedCollection))
     hideModal()
   }
 
@@ -146,11 +144,17 @@ const [collectionValue, setCollectionValue] = useState(0)
     localStorage.setItem('collection', JSON.stringify(collection))
 
     collection = JSON.parse(localStorage.getItem('collection'))
+    
     cardFromCollection = collection.find(card => card.id === c.id)
     cardFromCollection.totalValue = cardTotalValue(cardFromCollection)
+    if(cardFromCollection.totalValue === '$0.00') {
+      removeFromLocalCollection(cardFromCollection)
+      return
+    }
     localStorage.setItem('collection', JSON.stringify(collection))
     setCollectionValue(collectionMarketValue())
     totalVariationValue(c, v)
+    
   }
 
   const collectionMarketValue = () => {
@@ -177,7 +181,6 @@ const [collectionValue, setCollectionValue] = useState(0)
   
   // Create cardTotalVal property & value for each card in collection. Give each card a total value. total value = sum of both variations
   const cardTotalValue = (a) => {
-    if(collectionMounted) {
       let collection = JSON.parse(localStorage.getItem('collection'))
       let tempArr = []
       let cardTotalVal = null
@@ -187,8 +190,6 @@ const [collectionValue, setCollectionValue] = useState(0)
         cardTotalVal = tempArr.reduce((varA, varB) => varA + varB)
       }) 
       return addZeroes(cardTotalVal)
-    }
-    return
   }
 
   const totalVariationValue = (c, v) => {
@@ -199,11 +200,16 @@ const [collectionValue, setCollectionValue] = useState(0)
     return addZeroes(variationValue)
   }
 
+  // helps showModal match the selected card to the corresponding card in currentCards
+  const matchCard = (currentCards, e) => {
+    return currentCards.find(card => card.id === e)
+  }
 // , create two functions first to show modal second to hide modal, 
-  const showModal = (e) => {
+  const showModal = (e, currentCards) => {
+    let matchedCard = matchCard(currentCards, e.target.id)
     setShowCardDetails(true)
-    console.log(e)
-    setSelectedCard(e.target.id)
+    setSelectedCard(matchedCard)
+    console.log(matchedCard)
   }
 
   const hideModal = () => {
