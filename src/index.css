@@ -116,54 +116,103 @@ margin-bottom: .5rem;
   }
 }
 
+.search-container {
+  width: 50%;
+  margin: 50px auto;
+}
+input[type="text"] {
+  display: block;
+  width: calc(100% - 12px); /*20px [ left & Right ] padding + 4px border [ left & Right ] */ 
+  font-size: 1rem;
+  font-weight: 600;
+  color: #385ea6;
+  padding: 10px;
+  border: 2px solid #385ea6;
+  border-radius: 6px;
+  opacity: .5;
+  font-family: Montserrat;
+}
+input::placeholder {
+  opacity: .5;
+  color: #2c4c86;
+}
+input:hover {
+  opacity: 1;
+}
+input:focus {
+  opacity: 1;
+}
+
+.search-container form {
+  position: relative;
+  margin-left: 1.5rem;
+}
+.search-container form button {
+  position: absolute;
+  right: 0;
+  bottom: 14px;
+  height: 100%;
+  width: 50px;
+  background: transparent;
+  border: transparent;
+  font-size: 20px;
+  color: #385ea6;
+  cursor: pointer;
+  outline: 0;
+}
+.fa-search {
+  opacity: .5;
+}
+.fa-search:hover {
+  opacity: 1;
+}
+
+
+
+
+
+
+
+
+
 .search-text-wrapper {
-  display: flex;
+  display: inline-flex;
   width: 100%;
   gap: .5rem;
-  justify-content: flex-start;
-  margin-left: 4.3rem;
-  font-weight: 500;
-  font-size: .9rem;
+  justify-content: center;
+  /* margin-left: 4.3rem; */
+  /* font-weight: 500;
+  font-size: 1rem; */
   margin-top: .5rem;
-  margin-bottom: 1rem;
-  opacity: .6;
+  /* margin-bottom: 1rem; */
+  /* opacity: .6; */
 }
 
 form {
-  margin-top: 3rem;
+  /* margin-top: 3rem;
   display: flex;
   flex-direction: column;
+  width: 100%; */
+  /* position: relative; */
 }
 .form-field {
-  position: relative;
-  display: inline-block;
+  /* position: relative;
+  display: flex;
+  justify-content: center;
+  max-width: 600px; */
 }
 
 .icon {
-  position: absolute;
-  left: 0;
-  top: 7px;
-  width: 1.5rem;
-  margin-left: 4.5rem;
-}
-#query {
+  /* position: absolute;
+  left: 22.5%;
+  top: 17%;
+  width: 1.7rem;
   margin-left: 4rem;
-  text-indent: 2.5rem;
-  width: 500px;
-  height: 2rem;
-  border-radius: .5rem;
-  border: 3px solid #385ea6;
-  opacity: .3;
-  font-family: Montserrat;
-  font-weight: 500;
+  align-self: flex-start; */
+  /* display: inline; */
+  
 }
-#query:hover {
-  opacity: .6;
-}
-#query:focus {
-  opacity: 1;
-  outline: 0px solid #385ea6;
-}
+
 #cardNumberSearch {
   /* display: inline; */
 }

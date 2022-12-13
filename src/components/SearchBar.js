@@ -104,22 +104,11 @@ function SearchBar() {
   return (
     
     <>
-
-      
-      <form onSubmit={handleSubmit}>
-
-      <div className="form-field">
-        <input
-              type="text"
-              id="query"
-              onInput={getValue}
-              placeholder={searchPlaceholder}
-        />
-        <img src={search} className='icon'/>
-      </div>
-      
-          
-          <div className="search-text-wrapper">
+    <div className="search-container">
+    <form onSubmit={handleSubmit}>
+      <input type="text" placeholder={searchPlaceholder} name="search" onInput={getValue}/>
+      <button type="submit" onSubmit={handleSubmit}><i className="fa fa-search"></i></button>
+      <div className="search-text-wrapper">
             <input
               type="checkbox"
               id="cardNumberSearch"
@@ -128,6 +117,27 @@ function SearchBar() {
             />
             <label className="search-label" htmlFor="cardNumberSearch">Search by card number</label>
           </div>
+    </form>
+</div>
+    
+    
+    
+      
+      <form onSubmit={handleSubmit}>
+
+      <div className="form-field">
+      <img src={search} className='icon'/>
+        <input
+              type="text"
+              id="query"
+              onInput={getValue}
+              placeholder={searchPlaceholder}
+        />
+        
+      </div>
+      
+          
+
 
           {/* <button type="submit" className="submit" >Search</button> */}
         {error && <p>{error}</p>}
