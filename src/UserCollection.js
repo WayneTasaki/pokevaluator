@@ -40,7 +40,7 @@ function UserCollection() {
     {selectedCard && <CardDetails/>}
     
     <header className='collection-header'>
-      <Link to='' element={<Home/>} className='logo-link'>
+      <Link to='/' element={<Home/>} className='logo-link'>
         <img src={pokevaluatorLogo} className='collection-logo'/>
       </Link>
     </header>

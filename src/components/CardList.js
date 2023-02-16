@@ -39,7 +39,7 @@ function CardList() {
   // let selectedSort = ''
 
   const [selectedSort, setSelectedSort] = useState()
-  console.log(selectedSort)
+
   useEffect(() => {
     if(collectionMounted) {
       setSelectedSort('Market Price (High - Low)')
@@ -152,6 +152,7 @@ function CardList() {
       </div>
 
       {/* maps through all currentCards. The ID is the index where the card sits inside the currentCard object. I use this to identify which card is clicked to bring up the CardDetails component */}
+      {error && <p className='error'>{error}</p>}
       <div className='card-wrapper'>
         {currentCards && currentCards.map(c => (
           <React.Fragment key={`${c.id} frag`}>

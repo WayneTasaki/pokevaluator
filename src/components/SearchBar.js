@@ -106,7 +106,7 @@ function SearchBar() {
     <>
     <div className="search-container">
     <form onSubmit={handleSubmit}>
-      <input type="text" placeholder={searchPlaceholder} name="search" onInput={getValue}/>
+      <input type="text" id="query" placeholder={searchPlaceholder} name="search" onInput={getValue}/>
       <button type="submit" onSubmit={handleSubmit}><i className="fa fa-search"></i></button>
       <div className="search-text-wrapper">
             <input
@@ -119,29 +119,6 @@ function SearchBar() {
           </div>
     </form>
 </div>
-    
-    
-    
-      
-      <form onSubmit={handleSubmit}>
-
-      <div className="form-field">
-      <img src={search} className='icon'/>
-        <input
-              type="text"
-              id="query"
-              onInput={getValue}
-              placeholder={searchPlaceholder}
-        />
-        
-      </div>
-      
-          
-
-
-          {/* <button type="submit" className="submit" >Search</button> */}
-        {error && <p>{error}</p>}
-      </form>
       </>
   );
 }

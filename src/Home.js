@@ -34,23 +34,28 @@ function Home() {
           <img src={pokeball} className='loadingBall'/>
         </div>
       }
+
     {selectedCard && <CardDetails/>}
+
     <div className='header'>
-      
+    <img src={pokevaluatorLogo} alt="" className='mobile-logo'/>
+    <div className="collection-link">
       <Link to='/collection' element={<UserCollection />}>
-        <img src={collectionIcon} className='collectionIcon' alt="" onClick={ () => setCurrentCards()}/>
-        <p className='collection-header-text'>Collection</p>
+          <img src={collectionIcon} className='collectionIcon' alt="" onClick={ () => setCurrentCards()}/>
+          <p className='collection-header-text'>Collection</p>
       </Link>
-      
     </div>
+
+    </div>
+
   <div className='home-wrapper'>
     <img src={pokevaluatorLogo} alt="" className='logo'/>
     <SearchBar/>
-    </div>
+  </div>
     
-      <div>
+ 
     {searchOccured && <CardList/>}
-      </div>
+  
     
     </>
   
