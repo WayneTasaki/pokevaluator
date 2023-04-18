@@ -12,7 +12,7 @@ import { Router, Routes, Link } from 'react-router-dom'
 
 function UserCollection() {
   const parseCurrency = require('parsecurrency')
-  const { query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, setCollectionMounted, onHomepage, setOnHomepage, collectionValue, setCollectionValue, collectionMarketValue, addZeroes, mounted, handleChangeSort} = useContext(PokeContext)
+  const { query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, setCollectionMounted, onHomepage, setOnHomepage, collectionValue, setCollectionValue, collectionMarketValue, addZeroes, mounted, handleChangeSort, setCardTotalMarketValue, CardTotalMarketValue} = useContext(PokeContext)
   
   
 
@@ -30,7 +30,6 @@ function UserCollection() {
     setCurrentCards(cards.slice(indexOfFirstCard, indexOfLastCard))
   }, [cards])
 
-  console.log(currentCards)
     
   
   

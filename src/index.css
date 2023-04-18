@@ -33,8 +33,8 @@
   width: 100px;
   border-bottom-left-radius: .5rem;
   border-bottom-right-radius: .5rem;
-  -webkit-box-shadow: 0px 2px 14px -5px #000000; 
-  box-shadow: 0px 2px 14px -5px #000000;
+  -webkit-box-shadow: 0px 4px 20px -7px #000000; 
+  box-shadow: 0px 4px 20px -7px #000000; 
   /* opacity: .85; */
   transition: .3s;
    
@@ -276,8 +276,8 @@ form {
   padding: initial;
 }
 .cards {
-  width: 15rem;
-  height: 20.625rem;
+  /* width: 15rem;
+  height: 20.625rem; */
   border-radius: .5rem;
   margin: .5rem;
   transition: .5s;
@@ -294,6 +294,7 @@ form {
 
 .pagination-wrapper {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
   gap: .5rem;
@@ -369,7 +370,7 @@ form {
 }
 
 .modal-bg {
-  background-color: rgba(0, 0, 0, 0.233);
+  background-color: rgba(0, 0, 0, 0.579);
   position: fixed;
   z-index: 2;
   width: 100%;
@@ -380,8 +381,8 @@ form {
   display: flex;
   justify-content: center;
   background-color: #f8f8f8;
-  min-height: 75%;
-  width: 1000px;
+  min-height: 83%;
+  width: clamp(18.125rem, -1.8750rem + 100.0000vw, 56.25rem);
   max-width: 900px;
   z-index: 3;
   position:fixed;
@@ -397,7 +398,7 @@ form {
   color: black;
   font-size: 2rem;
   position: absolute;
-  left: 96%;
+  left: 90%;
   cursor: pointer;
 }
 .cardDetails {
@@ -442,6 +443,7 @@ form {
   font-size: 2rem;
   font-weight: 800;
   color: #313639;
+  width: 100%;
 }
 #supertype {
   font-weight: 500;
@@ -658,52 +660,86 @@ form {
   color: rgb(255, 111, 0);
 }
 
+@media only screen and (max-width: 973px) {
+  .money-bag-total {
+    display: none;
+  }
+  .total-card-value {
+    font-size: 80%;
+  }
+}
 @media only screen 
    and (max-width : 760px) {
-    .collectionIcon {
-      width: 63%;
+    #query {
+      width: 100%;
     }
-    .collection-link {
+  
+    /* .collectionIcon {
+      width: 63%;
+      
+    } */
+    /* .collection-link {
       display: flex;
       flex-direction: column;
       justify-content: center;
       padding-top: 1rem;
-      /* width: 100%; */
+      
+      width: 100%;
+    } */
+    .collection-link {
+      display: block;
     }
     .header {
-      /* display: flex; */
+      justify-content: center;
+      /* display: flex;
       justify-content: center;
       align-items: center;
-      /* gap: 3rem; */
-      flex-direction: column;
+      gap: 3rem;
+      flex-direction: column; */
+      padding-left: 0;
+      
+    }
+    .collection-link {
+      width: 15%;
+      position: fixed;
+      /* display: block; */
+      bottom: 7rem;
+      right: 2rem;
+      /* background-color: #5082dd; */
+      /* padding: .3rem .2rem .5rem; */
+      margin: 0;
+      
+      z-index: 2;
     }
     .header a {
-      width: 15%;
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-      background-color: #5082dd;
-      padding: .3rem .2rem .5rem;
-      margin: 0;
+      /* position: sticky; */
       border-radius: 8px;
+      padding-top: .5rem;
     }
     .logo {
       display: none;
     }
     .mobile-logo {
       display: block;
-      margin-top: 1.5rem;
-      /* margin-left: 1.5rem; */
-      width: 90%;
+      margin-top: 1rem;
+      margin-left: 2%;
+      /* width: 70%; */
+      width: clamp(19rem, 16.0909rem + 14.5455vw, 23rem);
+
     }
     .collection-header-text {
-      margin: 0;
+      /* margin: 0; */
+    }
+    .collection-logo {
+      width: clamp(19rem, 14.6265rem + 21.8675vw, 25rem);
+      ;
     }
     .search-container  {
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
+      /* margin: 0; */
     }
     .search-container form {
       margin-left: 0px;
@@ -712,4 +748,73 @@ form {
     input[type="text"] {
       /* width: 100%; */
     }
+
+    .modal {
+      width: 90%;
+      height: 90%;
+      justify-content: normal;
+    }
+    .selected-card-image-wrapper {
+      display: none;
+    }
+    .total-card-value {
+      align-self: center;
+      font-size: 90%;
+    }
+ 
+
+    @media only screen 
+   and (max-width : 455px) {
+    .total-collection-value {
+      width: 100%;
+      margin-left: 5%;
+      margin-right: 5%;
+    }
+    
+    .sort-wrapper {
+      justify-content: center;
+    }
+    .mobile-logo {
+      /* width: 100%; */
+    }
+    .collection-header {
+      padding-top: 1rem;
+    }
+    .collection-logo {
+      width: clamp(19rem, 16.0909rem + 14.5455vw, 23rem);
+      ;
+    }
+    .collection-link {
+      width: 15%;
+      position: fixed;
+      /* display: block; */
+      bottom: 7rem;
+      right: 2.5rem;
+      /* background-color: #5082dd; */
+      /* padding: .3rem .2rem .5rem; */
+      margin: 0;
+      
+      z-index: 2;
+    }
+    .header a {
+      /* margin: 0; */
+    }
+
+    .selected-card-image-wrapper {
+
+    }
+    .modal {
+      width:90%;
+      height: 90%;
+    }
+    .cardDetails {
+      width: 100%;
+      margin-right: 1rem;
+    }
+    .total-card-value {
+      padding: .3rem;
+      text-align: center;
+    }
+    
+   }
 }

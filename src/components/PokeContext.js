@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useRef } from "react";
+import { createContext, useState, useEffect, useRef, useReducer } from "react";
 
 const PokeContext = createContext();
 
@@ -21,7 +21,8 @@ export function PokeProvider({ children }) {
   const [selectedCard, setSelectedCard] = useState()
   const [onHomepage, setOnHomepage] = useState(true)
   const [searchOccured, setSearchOccurred] = useState(false)
-
+  const [setCardTotalMarketValue, CardTotalMarketValue] = useState()
+  const [hasValueChanged, setHasValueChanged] = useState(false)
 
   // ------- ** USER STATES ** ------- //
 
@@ -99,7 +100,7 @@ const [collectionValue, setCollectionValue] = useState(0)
       cardFromCollection.totalValue = cardTotalValue(cardFromCollection)
       localStorage.setItem('collection', JSON.stringify(collection))
       console.log(cardTotalValue(cardFromCollection))
-      console.log(cardFromCollection)
+      console.log(cardFromCollection.totalValue)
       setCollectionValue(collectionMarketValue())
     } else
     if(collection.length > 0 && !collection.some(card => card.id === newCardId)) {
@@ -183,8 +184,9 @@ const [collectionValue, setCollectionValue] = useState(0)
   const cardTotalValue = (a) => {
       let collection = JSON.parse(localStorage.getItem('collection'))
       let tempArr = []
-      let cardTotalVal = null
+      let cardTotalVal = 0
       let cardInCollection = collection.find(card => card.id === a.id)
+      // console.log(cardInCollection)
       Object.keys(cardInCollection.tcgplayer.prices).forEach((v) => {
         tempArr.push(cardInCollection.tcgplayer.prices[v].market * cardInCollection.variations[v].amount)
         cardTotalVal = tempArr.reduce((varA, varB) => varA + varB)
@@ -261,9 +263,8 @@ const [collectionValue, setCollectionValue] = useState(0)
   }
 
 
-  console.log(collectionMounted)
   return (
-    <PokeContext.Provider value={{ query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, setCollectionMounted, onHomepage, setOnHomepage, collectionValue, setCollectionValue, collectionMarketValue, addZeroes, cardTotalValue, showCollectionAmount, totalVariationValue, removeFromLocalCollection, decrementCardVariation, isCardVarInCollection, searchOccured, setSearchOccurred }}>
+    <PokeContext.Provider value={{ query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, setCollectionMounted, onHomepage, setOnHomepage, collectionValue, setCollectionValue, collectionMarketValue, addZeroes, cardTotalValue, showCollectionAmount, totalVariationValue, removeFromLocalCollection, decrementCardVariation, isCardVarInCollection, searchOccured, setSearchOccurred, setCardTotalMarketValue, CardTotalMarketValue, hasValueChanged, setHasValueChanged }}>
       {children}
     </PokeContext.Provider>
   );

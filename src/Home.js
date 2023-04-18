@@ -40,7 +40,7 @@ function Home() {
     <div className='header'>
     <img src={pokevaluatorLogo} alt="" className='mobile-logo'/>
     <div className="collection-link">
-      <Link to='/collection' element={<UserCollection />}>
+      <Link to='/collection' element={<UserCollection />} >
           <img src={collectionIcon} className='collectionIcon' alt="" onClick={ () => setCurrentCards()}/>
           <p className='collection-header-text'>Collection</p>
       </Link>

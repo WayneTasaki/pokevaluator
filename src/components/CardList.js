@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useContext, useEffect, useRef } from 'react'
+import { useState, useContext, useEffect, useRef, useReducer } from 'react'
 import PokeContext from './PokeContext'
 import Pagination from './Pagination'
 import CardDetails from './CardDetails'
@@ -9,7 +9,7 @@ import moneyBag from '../images/moneyBag.png'
 // Figure out how to filter results based on certain criteria. What should be the default sorting method? What should be all the filter criteria? Do I add conditionals in SearchBar.js since the filter needs to happen to the main card object? I guess not, so long as you're only able to filter once you do a search for a pokemon
 function CardList() {
   const parseCurrency = require('parsecurrency');
-  const { query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, setCollectionMounted, cardTotalValue, mounted } = useContext(PokeContext)
+  const { query, setQuery, isLoading, setIsLoading, error, setError, cards, setCards, currentPage, setCurrentPage, cardsPerPage, setCardsPerPage, indexOfLastCard, setIndexOfLastCard, indexOfFirstCard, setIndexOfFirstCard, currentCards, setCurrentCards, searchType, setSearchType, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, collectionMounted, collectionValue, setCollectionMounted, cardTotalValue, mounted, setCardTotalMarketValue, CardTotalMarketValue, hasValueChanged, setHasValueChanged } = useContext(PokeContext)
   
   const isFirstRender = useRef(true)
   
@@ -29,19 +29,13 @@ function CardList() {
       
     }
  
-  
-  
-  // when collection is mounted, setCards to collection
-  let collection = JSON.parse(localStorage.getItem('collection'))
-  // collectionMounted && setCards(collection.slice(indexOfFirstCard, indexOfLastCard))
-  // console.log(cards)
-  // console.log(collection)
-  // let selectedSort = ''
+
 
   const [selectedSort, setSelectedSort] = useState()
 
   useEffect(() => {
     if(collectionMounted) {
+      
       setSelectedSort('Market Price (High - Low)')
       let sortDropDown = document.getElementById('sort')
       sortDropDown.value = 'Market Price'
@@ -82,7 +76,37 @@ function CardList() {
     
   }, [indexOfFirstCard])
 
+
+
+  useEffect(() => {
+    if(!collectionMounted) {
+      setHasValueChanged(false)
+      return;
+    }
+    if(collectionMounted) {
+      setHasValueChanged(true)
+    }
+
+    
+  }, [collectionValue])
+
+
+
+
+
+  // useeffect - when collectionValue changes, if collectionMounted, set a state like hasValueChanged and change it to true. 
   
+  // then in the cardvalue section, if hasValueChanged, conditionally render the tryingToFindValue(c) text
+  
+  
+
+
+
+
+
+
+
+
 // console.log(currentCards)
 
 // cards.sort((d1, d2) => new Date(d1.set.releaseDate).getTime() - new Date(d2.set.releaseDate).getTime())
@@ -137,6 +161,25 @@ function CardList() {
     const collectionDefaultSort = () => {
        return selectedSort
     }
+    
+    const tryingToFindValue = (p) => {
+      let collection = JSON.parse(localStorage.getItem('collection'))
+      let cardInCollection = collection.find(card => card.id === p.id)
+      let cardValue = cardInCollection.totalValue
+      return cardValue
+      
+    }
+    
+    // const updateCardValue = (c) => {
+    //   let collection = JSON.parse(localStorage.getItem('collection'))
+    //   let oldCardId = c.id
+    //   let updatedCard = collection.find(card => card.id === oldCardId)
+    //   return updatedCard.totalValue
+    // }
+
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+
+    
   
   return (
     
@@ -161,7 +204,12 @@ function CardList() {
 
            {collectionMounted && 
            <>
-            <span className='collection-card-value'><img src={moneyBag} className='money-bag'/>{c.totalValue}</span>
+            <span className='collection-card-value'><img src={moneyBag} className='money-bag'/>
+            {hasValueChanged && tryingToFindValue(c)}
+            {!hasValueChanged && c.totalValue}
+            
+            
+            </span>
            </>
            }
 

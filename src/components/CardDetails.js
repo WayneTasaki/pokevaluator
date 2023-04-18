@@ -8,7 +8,7 @@ import { faCircleMinus } from '@fortawesome/free-solid-svg-icons'
 
 
 function CardDetails(card) {
-  const { currentCards, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, collection, setCollection, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, addZeroes, collectionMounted, cardTotalValue, showCollectionAmount, totalVariationValue, removeFromLocalCollection, decrementCardVariation, isCardVarInCollection} = useContext(PokeContext)
+  const { currentCards, showCardDetails, setShowCardDetails, showModal, hideModal, selectedCard, setSelectedCard, parseDate, collection, setCollection, saveLocalCollection, formatCardVariation, getCardVariations, addVariations, addZeroes, collectionMounted, collectionValue, cardTotalValue, showCollectionAmount, totalVariationValue, removeFromLocalCollection, decrementCardVariation, isCardVarInCollection, hasValueChanged, setHasValueChanged} = useContext(PokeContext)
 
   // when card is added to collection, show popup that says card added to collection and fadeout within 2s
   // when selected card is in collection, show things that indicate to user that they own it and how many
@@ -21,7 +21,7 @@ function CardDetails(card) {
     <>
       <div className='modal'>
         <span id='close' onClick={() => hideModal()}>&times;</span>
-        {collectionMounted && <span className='remove' onClick={() => removeFromLocalCollection(selectedCard)}>REMOVE CARD FROM COLLECTION</span>}
+        {collectionMounted && <span className='remove' onClick={() => removeFromLocalCollection(selectedCard)}>REMOVE FROM COLLECTION</span>}
 
         <div className='selected-card-image-wrapper'>
         <img src={selectedCard.images.large} alt="" className='selected-card-image'/> 
